@@ -5,15 +5,15 @@
 Summary:	GStreamer 0.10 plugin to support Video Acceleration API
 Summary(pl.UTF-8):	Wtyczka GStreamera 0.10 obsługująca Video Acceleration API
 Name:		gstreamer0.10-vaapi
-Version:	0.5.2
+Version:	0.5.3
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://www.freedesktop.org/software/vaapi/releases/gstreamer-vaapi/gstreamer-vaapi-%{version}.tar.bz2
-# Source0-md5:	849825cad1def77ab5199a2b9b1b7bdb
+# Source0-md5:	c3bbf40f96c9c731bc9d57b31ffe39da
 URL:		http://www.freedesktop.org/wiki/Software/vaapi/
 BuildRequires:	Mesa-libGL-devel
-BuildRequires:	autoconf >= 2.58
+BuildRequires:	autoconf >= 2.66
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	glib2-devel >= 1:2.28.0
 BuildRequires:	gstreamer0.10-devel >= 0.10.36
@@ -94,7 +94,8 @@ Statyczne biblioteki VA-API GStreamera 0.10.
 %{__automake}
 %configure \
 	--disable-silent-rules \
-	%{!?with_static_libs:--disable-static}
+	%{!?with_static_libs:--disable-static} \
+	--with-gstreamer-api=0.10
 
 %{__make}
 
@@ -119,15 +120,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS README
 %attr(755,root,root) %{_libdir}/libgstvaapi-0.10.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-0.10.so.1
+%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-0.10.so.2
 %attr(755,root,root) %{_libdir}/libgstvaapi-drm-0.10.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-drm-0.10.so.1
+%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-drm-0.10.so.2
 %attr(755,root,root) %{_libdir}/libgstvaapi-glx-0.10.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-glx-0.10.so.1
+%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-glx-0.10.so.2
 %attr(755,root,root) %{_libdir}/libgstvaapi-wayland-0.10.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-wayland-0.10.so.1
+%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-wayland-0.10.so.2
 %attr(755,root,root) %{_libdir}/libgstvaapi-x11-0.10.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-x11-0.10.so.1
+%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-x11-0.10.so.2
 %attr(755,root,root) %{_libdir}/gstreamer-0.10/libgstvaapi.so
 
 %files devel
