@@ -5,12 +5,12 @@
 Summary:	GStreamer 0.10 plugin to support Video Acceleration API
 Summary(pl.UTF-8):	Wtyczka GStreamera 0.10 obsługująca Video Acceleration API
 Name:		gstreamer0.10-vaapi
-Version:	0.5.6
+Version:	0.5.7
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://www.freedesktop.org/software/vaapi/releases/gstreamer-vaapi/gstreamer-vaapi-%{version}.tar.bz2
-# Source0-md5:	0a3e645d12c8f275e8ea221ecb89f981
+# Source0-md5:	50d4009c8c85bae55217fcc911243df8
 Patch0:		%{name}-export.patch
 URL:		http://www.freedesktop.org/wiki/Software/vaapi/
 BuildRequires:	Mesa-libGL-devel
