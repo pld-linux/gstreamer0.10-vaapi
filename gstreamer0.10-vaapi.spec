@@ -5,13 +5,14 @@
 Summary:	GStreamer 0.10 plugin to support Video Acceleration API
 Summary(pl.UTF-8):	Wtyczka GStreamera 0.10 obsługująca Video Acceleration API
 Name:		gstreamer0.10-vaapi
-Version:	0.5.7
+Version:	0.5.8
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://www.freedesktop.org/software/vaapi/releases/gstreamer-vaapi/gstreamer-vaapi-%{version}.tar.bz2
-# Source0-md5:	50d4009c8c85bae55217fcc911243df8
+# Source0-md5:	375ddbab556e53ccc311b792f2c649a7
 Patch0:		%{name}-export.patch
+Patch1:		gstreamer-vaapi-videoutils.patch
 URL:		http://www.freedesktop.org/wiki/Software/vaapi/
 BuildRequires:	Mesa-libGL-devel
 BuildRequires:	autoconf >= 2.66
@@ -23,13 +24,14 @@ BuildRequires:	gstreamer0.10-plugins-base-devel >= 0.10.31
 BuildRequires:	gtk-doc >= 1.12
 BuildRequires:	libdrm-devel
 BuildRequires:	libtool >= 2:2.2
+BuildRequires:	libva-devel >= 1.2.0
 BuildRequires:	libva-drm-devel >= 1.1.0
 BuildRequires:	libva-glx-devel >= 1.0.9
 BuildRequires:	libva-wayland-devel >= 1.1.0
 BuildRequires:	libva-x11-devel >= 1.0.3
 BuildRequires:	pkgconfig
 # libva API versions
-BuildRequires:	pkgconfig(libva) >= 0.30.4
+BuildRequires:	pkgconfig(libva) >= 0.34.0
 BuildRequires:	pkgconfig(libva-drm) >= 0.33.0
 BuildRequires:	pkgconfig(libva-glx) >= 0.32.0
 BuildRequires:	pkgconfig(libva-wayland) >= 0.33.0
@@ -43,7 +45,7 @@ Requires:	glib2 >= 1:2.28.0
 Requires:	gstreamer >= 0.10.36
 Requires:	gstreamer-plugins-bad >= 0.10.22
 Requires:	gstreamer-plugins-base >= 0.10.31
-Requires:	libva >= 1.1.0
+Requires:	libva >= 1.2.0
 Requires:	wayland >= 1.0.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -62,6 +64,7 @@ Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	gstreamer0.10-devel >= 0.10.36
 Requires:	gstreamer0.10-plugins-base-devel >= 0.10.31
+Requires:	libva-devel >= 1.2.0
 Requires:	libva-drm-devel >= 1.1.0
 Requires:	libva-glx-devel >= 1.0.9
 Requires:	libva-wayland-devel >= 1.1.0
@@ -88,6 +91,7 @@ Statyczne biblioteki VA-API GStreamera 0.10.
 %prep
 %setup -q -n gstreamer-vaapi-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -123,15 +127,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS README
 %attr(755,root,root) %{_libdir}/libgstvaapi-0.10.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-0.10.so.4
+%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-0.10.so.5
 %attr(755,root,root) %{_libdir}/libgstvaapi-drm-0.10.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-drm-0.10.so.4
+%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-drm-0.10.so.5
 %attr(755,root,root) %{_libdir}/libgstvaapi-glx-0.10.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-glx-0.10.so.4
+%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-glx-0.10.so.5
 %attr(755,root,root) %{_libdir}/libgstvaapi-wayland-0.10.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-wayland-0.10.so.4
+%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-wayland-0.10.so.5
 %attr(755,root,root) %{_libdir}/libgstvaapi-x11-0.10.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-x11-0.10.so.4
+%attr(755,root,root) %ghost %{_libdir}/libgstvaapi-x11-0.10.so.5
 %attr(755,root,root) %{_libdir}/gstreamer-0.10/libgstvaapi.so
 
 %files devel
