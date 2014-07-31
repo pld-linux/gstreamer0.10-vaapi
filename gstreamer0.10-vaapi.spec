@@ -5,14 +5,13 @@
 Summary:	GStreamer 0.10 plugin to support Video Acceleration API
 Summary(pl.UTF-8):	Wtyczka GStreamera 0.10 obsługująca Video Acceleration API
 Name:		gstreamer0.10-vaapi
-Version:	0.5.8
+Version:	0.5.9
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://www.freedesktop.org/software/vaapi/releases/gstreamer-vaapi/gstreamer-vaapi-%{version}.tar.bz2
-# Source0-md5:	375ddbab556e53ccc311b792f2c649a7
+# Source0-md5:	d213d22affbb2d65ebf6107fec69999b
 Patch0:		%{name}-export.patch
-Patch1:		gstreamer-vaapi-videoutils.patch
 URL:		http://www.freedesktop.org/wiki/Software/vaapi/
 BuildRequires:	Mesa-libGL-devel
 BuildRequires:	autoconf >= 2.66
@@ -91,7 +90,6 @@ Statyczne biblioteki VA-API GStreamera 0.10.
 %prep
 %setup -q -n gstreamer-vaapi-%{version}
 %patch0 -p1
-%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -115,7 +113,7 @@ rm -rf $RPM_BUILD_ROOT
 # gstreamer module
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/gstreamer-0.10/libgst*.la
 # obsoleted by pkg-config
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libgstvaapi-*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libgst*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -126,6 +124,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS README
+%attr(755,root,root) %{_libdir}/libgstcodecparsers_vpx.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libgstcodecparsers_vpx.so.0
 %attr(755,root,root) %{_libdir}/libgstvaapi-0.10.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libgstvaapi-0.10.so.5
 %attr(755,root,root) %{_libdir}/libgstvaapi-drm-0.10.so.*.*.*
@@ -140,6 +140,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libgstcodecparsers_vpx.so
 %attr(755,root,root) %{_libdir}/libgstvaapi-0.10.so
 %attr(755,root,root) %{_libdir}/libgstvaapi-drm-0.10.so
 %attr(755,root,root) %{_libdir}/libgstvaapi-glx-0.10.so
@@ -155,6 +156,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
+%{_libdir}/libgstcodecparsers_vpx.a
 %{_libdir}/libgstvaapi-0.10.a
 %{_libdir}/libgstvaapi-drm-0.10.a
 %{_libdir}/libgstvaapi-glx-0.10.a
