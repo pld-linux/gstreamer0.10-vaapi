@@ -1,0 +1,96 @@
+--- gstreamer-vaapi-0.5.10/configure.ac.orig	2015-02-03 09:00:40.000000000 +0100
++++ gstreamer-vaapi-0.5.10/configure.ac	2015-07-03 19:33:34.514450149 +0200
+@@ -309,10 +309,6 @@
+     [gstreamer-interfaces-$GST_PKG_VERSION >= $GST_PLUGINS_BASE_VERSION_REQUIRED])
+ fi
+ 
+-dnl ... gst_dmabuf_memory_get_fd (gstreamer-allocators)
+-PKG_CHECK_MODULES([GST_ALLOCATORS],
+-    [gstreamer-allocators-$GST_PKG_VERSION >= $GST_PLUGINS_BASE_VERSION_REQUIRED])
+-
+ dnl ... GstVideoOverlayComposition (gstreamer-video)
+ PKG_CHECK_MODULES([GST_VIDEO],
+     [gstreamer-video-$GST_PKG_VERSION >= $GST_PLUGINS_BASE_VERSION_REQUIRED])
+--- gstreamer-vaapi-0.5.10/gst/vaapi/gstvaapipluginutil.c.orig	2015-02-03 08:56:36.000000000 +0100
++++ gstreamer-vaapi-0.5.10/gst/vaapi/gstvaapipluginutil.c	2015-07-03 20:26:01.464318084 +0200
+@@ -686,7 +686,9 @@
+ 
+   vip->interlace_mode = vi.interlace_mode;
+   vip->flags = vi.flags;
++#if GST_CHECK_VERSION(1,0,0)
+   vip->views = vi.views;
++#endif
+   vip->par_n = vi.par_n;
+   vip->par_d = vi.par_d;
+   vip->fps_n = vi.fps_n;
+--- gstreamer-vaapi-0.5.10/gst/vaapi/gstvaapisink.c.orig	2015-02-03 08:56:36.000000000 +0100
++++ gstreamer-vaapi-0.5.10/gst/vaapi/gstvaapisink.c	2015-07-03 20:51:34.547587080 +0200
+@@ -110,8 +110,10 @@
+ static void
+ gst_vaapisink_color_balance_iface_init (GstColorBalanceInterface * iface);
+ 
++#if GST_CHECK_VERSION(1,0,0)
+ static void
+ gst_vaapisink_navigation_iface_init (GstNavigationInterface * iface);
++#endif
+ 
+ G_DEFINE_TYPE_WITH_CODE (GstVaapiSink,
+     gst_vaapisink,
+@@ -121,8 +123,11 @@
+         gst_vaapisink_video_overlay_iface_init);
+     G_IMPLEMENT_INTERFACE (GST_TYPE_COLOR_BALANCE,
+         gst_vaapisink_color_balance_iface_init);
++#if GST_CHECK_VERSION(1,0,0)
+     G_IMPLEMENT_INTERFACE (GST_TYPE_NAVIGATION,
+-        gst_vaapisink_navigation_iface_init));
++        gst_vaapisink_navigation_iface_init)
++#endif
++    );
+ 
+ enum
+ {
+@@ -842,6 +847,7 @@
+ /* --- GstNavigation interface                                          --- */
+ /* ------------------------------------------------------------------------ */
+ 
++#if GST_CHECK_VERSION(1,0,0)
+ static void
+ gst_vaapisink_navigation_send_event (GstNavigation * navigation,
+     GstStructure * structure)
+@@ -888,6 +894,7 @@
+ {
+   iface->send_event = gst_vaapisink_navigation_send_event;
+ }
++#endif
+ 
+ /* ------------------------------------------------------------------------ */
+ /* --- Common implementation                                            --- */
+--- gstreamer-vaapi-0.5.10/gst/vaapi/gstvaapipluginbase.c.orig	2015-02-03 08:56:36.000000000 +0100
++++ gstreamer-vaapi-0.5.10/gst/vaapi/gstvaapipluginbase.c	2015-07-03 21:10:01.537540623 +0200
+@@ -132,6 +132,7 @@
+ {
+ }
+ 
++#if GST_CHECK_VERSION(1,1,0)
+ static gboolean
+ plugin_update_sinkpad_info_from_buffer (GstVaapiPluginBase * plugin,
+     GstBuffer * buf)
+@@ -158,7 +159,6 @@
+   return TRUE;
+ }
+ 
+-#if GST_CHECK_VERSION(1,1,0)
+ static gboolean
+ is_dma_buffer (GstBuffer * buf)
+ {
+--- gstreamer-vaapi-0.5.10/gst/vaapi/gstvaapivideoconverter_glx.c.orig	2015-02-03 08:56:36.000000000 +0100
++++ gstreamer-vaapi-0.5.10/gst/vaapi/gstvaapivideoconverter_glx.c	2015-07-03 21:12:12.477535129 +0200
+@@ -29,6 +29,8 @@
+ #include "gstvaapipluginutil.h"
+ #include "gstvaapivideometa.h"
+ 
++#include <GL/gl.h>
++
+ #if GST_CHECK_VERSION(1,0,0)
+ typedef gboolean (*GstSurfaceUploadFunction) (GstSurfaceConverter *,
+     GstBuffer *);
