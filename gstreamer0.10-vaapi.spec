@@ -6,13 +6,14 @@ Summary:	GStreamer 0.10 plugin to support Video Acceleration API
 Summary(pl.UTF-8):	Wtyczka GStreamera 0.10 obsługująca Video Acceleration API
 Name:		gstreamer0.10-vaapi
 Version:	0.5.10
-Release:	1
+Release:	2
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://www.freedesktop.org/software/vaapi/releases/gstreamer-vaapi/gstreamer-vaapi-%{version}.tar.bz2
 # Source0-md5:	3bd90b696b644be943450ba0c1497193
 Patch0:		%{name}-export.patch
 Patch1:		%{name}-oldgst.patch
+Patch2:		vpx-configure.patch
 URL:		http://www.freedesktop.org/wiki/Software/vaapi/
 BuildRequires:	Mesa-libGL-devel
 BuildRequires:	autoconf >= 2.66
@@ -41,6 +42,7 @@ BuildRequires:	wayland-devel >= 1.0.0
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXrandr-devel
 BuildRequires:	xorg-lib-libXrender-devel
+BuildRequires:	yasm
 Requires:	glib2 >= 1:2.28.0
 Requires:	gstreamer >= 0.10.36
 Requires:	gstreamer-plugins-bad >= 0.10.22
@@ -92,6 +94,7 @@ Statyczne biblioteki VA-API GStreamera 0.10.
 %setup -q -n gstreamer-vaapi-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -109,7 +112,7 @@ Statyczne biblioteki VA-API GStreamera 0.10.
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
+%{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 # gstreamer module

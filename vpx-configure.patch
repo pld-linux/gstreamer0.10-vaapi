@@ -1,0 +1,37 @@
+--- gstreamer-vaapi-0.5.10/ext/libvpx/upstream/build/make/configure.sh.orig	2018-11-11 00:01:04.000000000 +0100
++++ gstreamer-vaapi-0.5.10/ext/libvpx/upstream/build/make/configure.sh	2018-11-11 00:06:35.995740179 +0100
+@@ -1017,14 +1017,6 @@
+         esac
+     ;;
+     x86*)
+-        bits=32
+-        enabled x86_64 && bits=64
+-        check_cpp <<EOF && bits=x32
+-#ifndef __ILP32__
+-#error "not x32"
+-#endif
+-EOF
+-
+         case  ${tgt_os} in
+             win*)
+                 enabled gcc && add_cflags -fno-common
+@@ -1063,11 +1055,16 @@
+                 esac
+             ;;
+             gcc*)
+-                add_cflags -m${bits}
+-                add_ldflags -m${bits}
++                setup_gnu_toolchain
++                bits=32
++                enabled x86_64 && bits=64
++                check_cpp <<EOF && bits=x32
++#ifndef __ILP32__
++#error "not x32"
++#endif
++EOF
+                 link_with_cc=gcc
+                 tune_cflags="-march="
+-                setup_gnu_toolchain
+                 #for 32 bit x86 builds, -O3 did not turn on this flag
+                 enabled optimizations && disabled gprof && check_add_cflags -fomit-frame-pointer
+             ;;
